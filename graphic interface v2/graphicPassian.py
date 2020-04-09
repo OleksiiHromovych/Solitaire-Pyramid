@@ -53,13 +53,13 @@ class Board(QtWidgets.QMainWindow):
         self.ui.pushButton.show()
 
         self.ui.cardDobor.isDeleted = False
-        self.ui.cardDobor.setDisabled(False)
+
         for row in range(1, 8):
 
             for col in range(1, row+1):
                 value = self.deck.popleft()
 
-                self.cards_dict[row, col].setDisabled(True)
+
                 self.cards_dict[row, col].isDeleted = False
                 self.cards_dict[row, col].isActive = False
                 self.cards_dict[row, col].value = value
@@ -67,7 +67,7 @@ class Board(QtWidgets.QMainWindow):
                 self.cards_dict[row, col].show()
 
         for col in range(1, 8):
-            self.cards_dict[7, col].setDisabled(False)
+
             self.cards_dict[7, col].set_active()
 
         self.deck.append("back_cards-07")
@@ -77,7 +77,7 @@ class Board(QtWidgets.QMainWindow):
         self.ui.cardDobor.set_image("background.jpg")
 
         self.ui.cardDobor.isDeleted = False
-        self.ui.cardDobor.setDisabled(False)
+
 
         self.deck = Deck().deck
 
@@ -96,7 +96,7 @@ class Board(QtWidgets.QMainWindow):
             pos_x -= row * 100 + 50
 
         for col in range(1, 8):
-            self.cards_dict[7, col].setDisabled(False)
+
             self.cards_dict[7, col].set_active()
 
         self.deck.append("back_cards-07")
@@ -209,7 +209,7 @@ class Board(QtWidgets.QMainWindow):
 
                 if self.cards_dict[row+1, col].isDeleted and self.cards_dict[row+1, col+1].isDeleted:
                     if not self.cards_dict[row, col].isDeleted:
-                        self.cards_dict[row, col].setDisabled(False)
+
                         self.cards_dict[row, col].set_active()
 
     def last_dobor(self):
@@ -277,7 +277,6 @@ class Card(QtWidgets.QLabel):
         self.setAcceptDrops(True)
         self.setGeometry(QtCore.QRect(self.pos_xy[0], self.pos_xy[1], self.card_size[0], self.card_size[1]))
         self.set_image()
-        self.setDisabled(True)
         self.isDeleted = False
         self.isActive = False
         self.setObjectName("pushButton")
@@ -287,7 +286,7 @@ class Card(QtWidgets.QLabel):
         value: has type example 10C, KH"""
         pixmap = QPixmap(value)
         pixmap = pixmap.scaled(card_size[0], card_size[1])
-        self.setStyleSheet("")
+        self.setStyleSheet("background-color: transparent;")
         self.setPixmap(pixmap)
 
     def set_active(self, card_size=(80, 130)):
@@ -297,12 +296,12 @@ class Card(QtWidgets.QLabel):
         self.setPixmap(pixmap)
 
     def mousePressEvent(self, event):
-        if event.button() == Qt.LeftButton:
+        if self.isActive and event.button() == Qt.LeftButton:
             self.drag_start_position = event.pos()
             self.function(self)
 
     def mouseMoveEvent(self, event):
-        if not (event.buttons() & Qt.LeftButton):
+        if not (event.buttons() & Qt.LeftButton and self.isActive):
             return
         if (event.pos() - self.drag_start_position).manhattanLength() < QApplication.startDragDistance():
             return
@@ -325,7 +324,8 @@ class Card(QtWidgets.QLabel):
             self.show()
 
     def dragEnterEvent(self, e):
-        e.accept()
+        if self.isActive:
+            e.accept()
 
     def dropEvent(self, e):
         card1 = e.mimeData().parent()

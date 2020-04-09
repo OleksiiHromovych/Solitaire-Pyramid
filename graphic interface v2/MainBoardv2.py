@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setGeometry(QtCore.QRect(40, 40, 80, 130))
         self.score = QtWidgets.QLabel(self.centralwidget)
-        self.score.setGeometry(QtCore.QRect(900, 150, 280, 230))
+        self.score.setGeometry(QtCore.QRect(900, 150, 230, 230))
         self.pushButton.setObjectName("pushButton")
 
         self.lcdNumber = QtWidgets.QLCDNumber(self.centralwidget)
