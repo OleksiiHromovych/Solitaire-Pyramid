@@ -1,3 +1,5 @@
 # Solitaire-Pyramid
 
-<img src="/docs/images/game_window.png" width="250" height="500"> 
+Analog of popular card game.
+
+<img src="/docs/images/game_window.png"> 
