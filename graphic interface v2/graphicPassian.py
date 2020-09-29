@@ -26,7 +26,7 @@ class Board(QtWidgets.QMainWindow):
     def setup_board_element(self):
         """Customizing the features and design of the board elements: buttons, label. """
         self.ui.label.setPixmap(QPixmap("background.jpg").scaled(self.width(), self.height()))
-        self.ui.pushButton.setIcon(QIcon('default/purple_back.png'))
+        self.ui.pushButton.setIcon(QIcon('cards_images/purple_back.png'))
         self.ui.pushButton.setIconSize(QtCore.QSize(self.ui.pushButton.height(), self.ui.pushButton.height()))
         self.ui.pushButton.clicked.connect(self.dobor)
         self.ui.cardDobor = Card(self.ui.centralwidget,  "", (140, 40), self.gameplay)
@@ -59,7 +59,6 @@ class Board(QtWidgets.QMainWindow):
             for col in range(1, row+1):
                 value = self.deck.popleft()
 
-
                 self.cards_dict[row, col].isDeleted = False
                 self.cards_dict[row, col].isActive = False
                 self.cards_dict[row, col].value = value
@@ -77,8 +76,6 @@ class Board(QtWidgets.QMainWindow):
         self.ui.cardDobor.set_image("background.jpg")
 
         self.ui.cardDobor.isDeleted = False
-
-
         self.deck = Deck().deck
 
         pos_x = 550
@@ -279,9 +276,10 @@ class Card(QtWidgets.QLabel):
         self.set_image()
         self.isDeleted = False
         self.isActive = False
+        self.setStyleSheet(":disabled {background-color: red; }")
         self.setObjectName("pushButton")
 
-    def set_image(self, value="default/purple_back.png", card_size=(80, 130)):
+    def set_image(self, value="cards_images/purple_back.png", card_size=(80, 130)):
         """Paste image in card.
         value: has type example 10C, KH"""
         pixmap = QPixmap(value)
@@ -291,7 +289,7 @@ class Card(QtWidgets.QLabel):
 
     def set_active(self, card_size=(80, 130)):
         self.isActive = True
-        pixmap = QPixmap("default/" + self.value + '.png')
+        pixmap = QPixmap("cards_images/" + self.value + '.png')
         pixmap = pixmap.scaled(card_size[0], card_size[1])
         self.setPixmap(pixmap)
 
@@ -337,7 +335,7 @@ class Card(QtWidgets.QLabel):
 class Deck:
     """Contruct new deck of 52 card
 
-        :return nothing
+        :return null
     """
 
     def __init__(self):
